@@ -31,6 +31,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
     "/all-service",
     "/message",
     "/all-reviews",
+    "/report",
   ];
 
   const handleLogout = () => {

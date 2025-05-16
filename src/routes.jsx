@@ -19,6 +19,7 @@ import BusinessService from "@/pages/dashboard/BusinessService";
 import AllBusinessService from "@/pages/dashboard/AllBusinessService";
 import ReviewAndReplay from "@/pages/dashboard/ReviewAndReplay";
 import UpdateService from "./pages/dashboard/UpdateService";
+import Report from "./pages/dashboard/Report";
 import { SignIn } from "@/pages/auth";
 
 const icon = {
@@ -36,6 +37,7 @@ const routeIconMap = {
   "all business service": <RectangleStackIcon {...icon} />,
   "review and replay": <InformationCircleIcon {...icon} />,
   logout: <ArrowRightOnRectangleIcon {...icon} />,
+  report: <ServerStackIcon {...icon} />,
 };
 
 export const routes = [
@@ -65,6 +67,12 @@ export const routes = [
         name: "all service",
         path: "/all-service",
         element: <AllService />,
+      },
+      {
+        icon: routeIconMap.report,
+        name: "report",
+        path: "/report",
+        element: <Report />,
       },
       {
         icon: routeIconMap.message,
