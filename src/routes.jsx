@@ -9,6 +9,7 @@ import {
   DocumentTextIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
+
 import { Home, Profile, Tables } from "@/pages/dashboard";
 import Users from "@/pages/dashboard/Users";
 import Business from "@/pages/dashboard/Business";
@@ -20,6 +21,7 @@ import AllBusinessService from "@/pages/dashboard/AllBusinessService";
 import ReviewAndReplay from "@/pages/dashboard/ReviewAndReplay";
 import UpdateService from "./pages/dashboard/UpdateService";
 import Report from "./pages/dashboard/Report";
+import Product from "./pages/dashboard/Product";
 import { SignIn } from "@/pages/auth";
 
 const icon = {
@@ -38,6 +40,7 @@ const routeIconMap = {
   "review and replay": <InformationCircleIcon {...icon} />,
   logout: <ArrowRightOnRectangleIcon {...icon} />,
   report: <ServerStackIcon {...icon} />,
+  product: <TableCellsIcon {...icon} />, // Added icon for product
 };
 
 export const routes = [
@@ -61,6 +64,12 @@ export const routes = [
         name: "business",
         path: "/business",
         element: <Business />,
+      },
+      {
+        icon: routeIconMap.product,
+        name: "product",
+        path: "/product",
+        element: <Product />,
       },
       {
         icon: routeIconMap["all service"],
@@ -94,7 +103,7 @@ export const routes = [
       },
       {
         icon: routeIconMap["all business service"],
-        name: " business service",
+        name: "business service",
         path: "/all-business-service",
         element: <AllBusinessService />,
       },
@@ -110,6 +119,7 @@ export const routes = [
         path: "/review&replay",
         element: <ReviewAndReplay />,
       },
+
       {
         icon: routeIconMap.logout,
         name: "logout",
