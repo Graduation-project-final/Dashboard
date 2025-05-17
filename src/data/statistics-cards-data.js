@@ -2,7 +2,6 @@ import {
   BanknotesIcon,
   UserPlusIcon,
   UsersIcon,
-  ChartBarIcon,
 } from "@heroicons/react/24/solid";
 
 export const statisticsCardsData = [
