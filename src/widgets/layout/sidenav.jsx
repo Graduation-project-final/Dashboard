@@ -139,7 +139,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
       <div className="m-4">
         <Button
           onClick={handleLogout}
-          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 w-full"
+          className="bg-red-500 text-white py-2 px-4 -mt-1 rounded hover:bg-red-600 w-full"
         >
           Logout
         </Button>
