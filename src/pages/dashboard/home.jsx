@@ -80,7 +80,7 @@ export function Home() {
       <div className="mt-12">
         <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
           <StatisticsCard
-            color="gray"
+            color="teal"
             title="Total User's"
             icon={React.createElement(UsersIcon, {
               className: "w-6 h-6 text-white",
@@ -89,7 +89,7 @@ export function Home() {
             footer={null}
           />
           <StatisticsCard
-            color="gray"
+            color="teal"
             title="Total Service"
             icon={React.createElement(UsersIcon, {
               className: "w-6 h-6 text-white",
@@ -98,7 +98,7 @@ export function Home() {
             footer={null}
           />
           <StatisticsCard
-            color="gray"
+            color="teal"
             title="Total Business"
             icon={React.createElement(UserPlusIcon, {
               className: "w-6 h-6 text-white",
