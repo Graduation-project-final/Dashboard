@@ -10,6 +10,7 @@ const AdminDashboardContactForm = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchContact = async () => {
@@ -27,9 +28,10 @@ const AdminDashboardContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccessMessage("");
     try {
       await axios.put("http://localhost:4000/api/contacts/1", contact);
-      alert("Contact updated successfully!");
+      setSuccessMessage("Contact updated successfully!");
     } catch (err) {
       setError("Failed to update contact");
     }
@@ -43,20 +45,30 @@ const AdminDashboardContactForm = () => {
     }));
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return <p className="text-center text-gray-600 mt-4">Loading...</p>;
+  }
 
   return (
-    <div className="flex justify-center mt-8">
-      <div className="bg-white shadow-md rounded-lg w-full max-w-xl p-6">
-        <div className="bg-gray-800 text-white rounded-lg py-4 px-6">
-          <h1 className="text-2xl font-bold">Contact Form</h1>
+    <div className="flex justify-center px-4 mt-10">
+      <div className="bg-white shadow-lg rounded-xl w-full max-w-2xl overflow-hidden">
+        <div className="bg-teal-600 text-white py-6 px-8">
+          <h1 className="text-3xl font-bold">Update Contact Information</h1>
+          <p className="text-teal-100 text-sm mt-1">
+            You can manage your contact details below.
+          </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4 p-6">
+
+        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+          {error && <p className="text-red-500 font-medium">{error}</p>}
+          {successMessage && (
+            <p className="text-green-600 font-medium">{successMessage}</p>
+          )}
+
           <div>
             <label
               htmlFor="name"
-              className="block font-medium mb-1 text-gray-700"
+              className="block font-semibold text-teal-700 mb-1"
             >
               Name
             </label>
@@ -66,14 +78,15 @@ const AdminDashboardContactForm = () => {
               name="name"
               value={contact.name}
               onChange={handleChange}
-              className="w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="w-full border border-gray-300 px-2 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               required
             />
           </div>
+
           <div>
             <label
               htmlFor="email"
-              className="block font-medium mb-1 text-gray-700"
+              className="block font-semibold text-teal-700 mb-1"
             >
               Email
             </label>
@@ -83,14 +96,15 @@ const AdminDashboardContactForm = () => {
               name="email"
               value={contact.email}
               onChange={handleChange}
-              className="w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="w-full border border-gray-300 px-2 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               required
             />
           </div>
+
           <div>
             <label
               htmlFor="phone_number"
-              className="block font-medium mb-1 text-gray-700"
+              className="block font-semibold text-teal-700 mb-1"
             >
               Phone Number
             </label>
@@ -100,13 +114,14 @@ const AdminDashboardContactForm = () => {
               name="phone_number"
               value={contact.phone_number}
               onChange={handleChange}
-              className="w-full h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="w-full border border-gray-300 px-2 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               required
             />
           </div>
+
           <button
             type="submit"
-            className="w-full bg-gray-800 text-white font-medium py-2 px-4 rounded-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full bg-teal-600 text-white font-semibold py-2 rounded-lg hover:bg-teal-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400"
           >
             Update Contact
           </button>
