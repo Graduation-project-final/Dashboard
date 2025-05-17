@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input, Button, Typography } from "@material-tailwind/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
@@ -10,34 +11,33 @@ export function SignIn() {
 
   const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await axios.post(
-      "http://localhost:4000/api/auth/admin-login",
-      {
-        email,
-        password,
-      },
-    );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/auth/admin-login",
+        {
+          email,
+          password,
+        },
+      );
 
-    const { token, role } = response.data;
+      const { token, role } = response.data;
 
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("userRole", role);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("userRole", role);
 
-    alert("Login successful!");
-
-    if (role === "admin") {
-      navigate("/dashboard/home");
-    } else {
-      navigate("/dashboard/service-business");
+      if (role === "admin") {
+        navigate("/dashboard/home");
+      } else {
+        navigate("/dashboard/service-business");
+      }
+      debugger;
+      toast.success(`Welcome back ${role}`);
+    } catch (err) {
+      setError("Login failed. Please check your email and password.");
     }
-  } catch (err) {
-    setError("Login failed. Please check your email and password.");
-  }
-};
-
+  };
 
   return (
     <section className="m-8 flex gap-4">

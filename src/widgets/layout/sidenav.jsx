@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
+import { toast } from "react-toastify";
 
 export function Sidenav({ brandImg, brandName, routes }) {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -40,6 +41,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
     localStorage.clear();
 
     navigate("/dashboard/sign-in");
+
+    toast.success(`Logout successfully`);
   };
 
   const isSignInPage = location.pathname === "/dashboard/sign-in";
@@ -58,7 +61,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         <div className="py-6 px-8 text-center">
           <Typography
             variant="h6"
-            color={sidenavType === "dark" ? "white" : "blue-gray"}
+            color={sidenavType === "dark" ? "white" : "teal"}
           >
             {brandName}
           </Typography>
@@ -81,7 +84,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
               <li className="mx-3.5 mt-4 mb-2">
                 <Typography
                   variant="small"
-                  color={sidenavType === "dark" ? "white" : "blue-gray"}
+                  color={sidenavType === "dark" ? "white" : "amber"}
                   className="font-black uppercase opacity-75"
                 >
                   {title}
@@ -112,7 +115,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                             ? sidenavColor
                             : sidenavType === "dark"
                             ? "white"
-                            : "blue-gray"
+                            : "teal"
                         }
                         className="flex items-center gap-4 px-4 capitalize"
                         fullWidth
