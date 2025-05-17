@@ -22,6 +22,7 @@ import ReviewAndReplay from "@/pages/dashboard/ReviewAndReplay";
 import UpdateService from "./pages/dashboard/UpdateService";
 import Report from "./pages/dashboard/Report";
 import Product from "./pages/dashboard/Product";
+import ProductReview from "./pages/dashboard/ProductReview";
 import { SignIn } from "@/pages/auth";
 
 const icon = {
@@ -40,7 +41,8 @@ const routeIconMap = {
   "review and replay": <InformationCircleIcon {...icon} />,
   logout: <ArrowRightOnRectangleIcon {...icon} />,
   report: <ServerStackIcon {...icon} />,
-  product: <TableCellsIcon {...icon} />, // Added icon for product
+  product: <TableCellsIcon {...icon} />,
+  productReview: <DocumentTextIcon {...icon} />, // ✅ NEW icon entry
 };
 
 export const routes = [
@@ -70,6 +72,12 @@ export const routes = [
         name: "product",
         path: "/product",
         element: <Product />,
+      },
+      {
+        icon: routeIconMap.productReview,
+        name: "product review",
+        path: "/product-review",
+        element: <ProductReview />,
       },
       {
         icon: routeIconMap["all service"],
@@ -119,7 +127,6 @@ export const routes = [
         path: "/review&replay",
         element: <ReviewAndReplay />,
       },
-
       {
         icon: routeIconMap.logout,
         name: "logout",
