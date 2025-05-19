@@ -57,7 +57,6 @@ export function Tables() {
                     "Rating",
                     "Review",
                     "Date",
-                    "",
                   ].map((el) => (
                     <th
                       key={el}
@@ -152,15 +151,6 @@ export function Tables() {
                       </td>
 
                       {/* Action */}
-                      <td className={className}>
-                        <Typography
-                          as="a"
-                          href="#"
-                          className="text-xs font-semibold text-blue-gray-600"
-                        >
-                          Edit
-                        </Typography>
-                      </td>
                     </tr>
                   );
                 })}

@@ -283,7 +283,7 @@ const BusinessService = () => {
                         />
                       </svg>
                       <div className="flex text-sm text-gray-600">
-                        <label className="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500">
+                        <label className="relative cursor-pointer rounded-md font-medium text-teal-600 hover:text-teal-500">
                           <span>Upload main image</span>
                           <input
                             type="file"
@@ -335,7 +335,7 @@ const BusinessService = () => {
                         />
                       </svg>
                       <div className="flex text-sm text-gray-600">
-                        <label className="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500">
+                        <label className="relative cursor-pointer rounded-md font-medium text-teal-600 hover:text-teal-500">
                           <span>Upload multiple images</span>
                           <input
                             type="file"
