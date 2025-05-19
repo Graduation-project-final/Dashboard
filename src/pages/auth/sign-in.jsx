@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import { Input, Button, Typography } from "@material-tailwind/react";
+import {
+  Input,
+  Button,
+  Typography,
+  IconButton,
+} from "@material-tailwind/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -32,7 +39,6 @@ export function SignIn() {
       } else {
         navigate("/dashboard/service-business");
       }
-      debugger;
       toast.success(`Welcome back ${role}`);
     } catch (err) {
       setError("Login failed. Please check your email and password.");
@@ -40,72 +46,108 @@ export function SignIn() {
   };
 
   return (
-    <section className="m-8 flex gap-4">
-      <div className="w-full lg:w-3/5 mt-24">
-        <div className="text-center">
-          <Typography variant="h2" className="font-bold mb-4">
-            Sign In
-          </Typography>
-          <Typography
-            variant="paragraph"
-            color="blue-gray"
-            className="text-lg font-normal"
-          >
-            Enter your email and password to Sign In.
-          </Typography>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2"
-        >
-          <div className="mb-1 flex flex-col gap-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 -ml-80">
+      <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+        {/* Left side with form */}
+        <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+          <div className="text-center mb-8">
             <Typography
-              variant="small"
-              color="blue-gray"
-              className="-mb-3 font-medium"
+              variant="h3"
+              className="font-bold text-blue-gray-800 mb-2"
             >
-              Your email
+              Welcome Back!
             </Typography>
-            <Input
-              size="lg"
-              placeholder="name@mail.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="-mb-3 font-medium"
-            >
-              Password
+            <Typography variant="paragraph" className="text-blue-gray-600">
+              Sign in to access your dashboard
             </Typography>
-            <Input
-              type="password"
-              size="lg"
-              placeholder="********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
           </div>
-          {error && (
-            <Typography color="red" className="mt-2">
-              {error}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <Typography
+                  variant="small"
+                  className="font-medium text-blue-gray-800 mb-1"
+                >
+                  Email Address
+                </Typography>
+                <Input
+                  size="lg"
+                  placeholder="name@mail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="!border-blue-gray-200 focus:!border-gray-900"
+                  labelProps={{
+                    className: "hidden",
+                  }}
+                />
+              </div>
+
+              <div>
+                <Typography
+                  variant="small"
+                  className="font-medium text-blue-gray-800 mb-1"
+                >
+                  Password
+                </Typography>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    size="lg"
+                    placeholder="********"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="!border-blue-gray-200 focus:!border-gray-900 pr-10"
+                    labelProps={{
+                      className: "hidden",
+                    }}
+                  />
+                  <IconButton
+                    variant="text"
+                    size="sm"
+                    className="!absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5 text-blue-gray-500" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5 text-blue-gray-500" />
+                    )}
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+
+            {error && (
+              <Typography color="red" className="text-sm">
+                {error}
+              </Typography>
+            )}
+
+            <Button type="submit" className="w-full mt-2 bg-teal-600" size="lg">
+              Sign In
+            </Button>
+          </form>
+        </div>
+
+        {/* Right side with image */}
+        <div className="w-full md:w-1/2  hidden md:flex items-center justify-center p-8">
+          <div className="text-white text-center">
+            <img
+              src="https://img.freepik.com/free-vector/flat-feedback-concept-illustrated_23-2148946028.jpg?ga=GA1.1.674192113.1745719925&semt=ais_hybrid&w=740"
+              alt="Login illustration"
+              className="w-full h-auto max-w-md mx-auto rounded-xl"
+            />
+            <Typography variant="h4" className="font-bold mt-6">
+              Efficient Service Management
             </Typography>
-          )}
-          <Button type="submit" className="mt-6" fullWidth>
-            Sign In
-          </Button>
-        </form>
+            <Typography variant="paragraph" className="mt-2 opacity-90">
+              Streamline your business operations with our powerful dashboard
+            </Typography>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 

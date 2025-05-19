@@ -30,7 +30,7 @@ const AdminDashboardContactForm = () => {
     e.preventDefault();
     setSuccessMessage("");
     try {
-      await axios.put("http://localhost:4000/api/contacts/1", contact);
+      await axios.put("http://localhost:4000/api/contacts/2", contact);
       setSuccessMessage("Contact updated successfully!");
     } catch (err) {
       setError("Failed to update contact");

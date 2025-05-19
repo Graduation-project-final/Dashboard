@@ -5,8 +5,13 @@ import {
   CardHeader,
   CardBody,
   Typography,
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
 
 export function AllBusinessService() {
   const [businesses, setBusinesses] = useState([]);
@@ -14,6 +19,8 @@ export function AllBusinessService() {
   const [itemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
+  const [selectedBusiness, setSelectedBusiness] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -28,7 +35,6 @@ export function AllBusinessService() {
           },
         );
         setBusinesses(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching businesses:", error);
       }
@@ -42,11 +48,9 @@ export function AllBusinessService() {
   );
 
   const sortedBusinesses = filteredBusinesses.sort((a, b) => {
-    if (sortOrder === "newest") {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    } else {
-      return new Date(a.createdAt) - new Date(b.createdAt);
-    }
+    return sortOrder === "newest"
+      ? new Date(b.createdAt) - new Date(a.createdAt)
+      : new Date(a.createdAt) - new Date(b.createdAt);
   });
 
   const indexOfLastBusiness = currentPage * itemsPerPage;
@@ -56,193 +60,144 @@ export function AllBusinessService() {
     indexOfLastBusiness,
   );
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const totalPages = Math.ceil(sortedBusinesses.length / itemsPerPage);
 
+  const handleViewDetails = (business) => {
+    setSelectedBusiness(business);
+    setOpenDialog(true);
+  };
+
   return (
-    <div className="mt-12 mb-8 flex flex-col gap-12">
-      <Card className="shadow-lg rounded-lg">
-        <CardHeader
-          variant="gradient"
-          color="gray"
-          className="mb-8 p-6 rounded-t-lg"
-        >
-          <Typography variant="h6" color="white" className="text-center">
-            Business Services Table
-          </Typography>
-        </CardHeader>
-        <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-          {/* Search and Sort controls */}
-          <div className="mb-4 flex gap-4 items-center">
-            <input
-              type="text"
-              placeholder="Search by title"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="p-2 border border-gray-300 rounded-lg shadow-md w-80"
+    <div className="mt-10 mx-auto max-w-7xl px-6">
+      <div className="mb-6 flex flex-col md:flex-row justify-between items-center">
+        <Typography variant="h4" className="text-gray-800">
+          Business Services Overview
+        </Typography>
+        <div className="mt-4 md:mt-0 flex gap-3">
+          <input
+            type="text"
+            placeholder="Search title..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 border border-gray-300 rounded-lg shadow-md w-60"
+          />
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="p-2 border border-gray-300 rounded-lg shadow-md"
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentBusinesses.map((b) => (
+          <Card key={b.id} className="shadow-md hover:shadow-xl transition">
+            <img
+              src={`http://localhost:4000/${b.mainImage}`}
+              alt={b.title}
+              className="h-48 w-full object-cover rounded-t-lg"
             />
-            <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              className="p-2 border border-gray-300 rounded-lg shadow-md w-36"
-            >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-            </select>
-          </div>
-
-          <table className="w-full min-w-[720px] table-auto border-collapse">
-            <thead>
-              <tr>
-                {[
-                  "Title",
-                  "Category",
-                  "Subcategory",
-                  "Address",
-                  "Description",
-                  "Contact",
-                  "Main Image",
-                  "Sub Images",
-                  "Created At",
-                  "Updated At",
-                ].map((el) => (
-                  <th
-                    key={el}
-                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                  >
-                    <Typography
-                      variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
-                    >
-                      {el}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {currentBusinesses.map(
-                ({
-                  id,
-                  title,
-                  category,
-                  subcategory,
-                  address,
-                  description,
-                  contact,
-                  mainImage,
-                  subImages,
-                  createdAt,
-                  updatedAt,
-                }) => {
-                  const className = "py-3 px-5 border-b border-blue-gray-50";
-
-                  return (
-                    <tr
-                      key={id}
-                      className="hover:bg-gray-50 transition-all duration-200"
-                    >
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {title}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {category}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {subcategory}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {address}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {description}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {contact}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <img
-                          src={`http://localhost:4000/${mainImage}`}
-                          alt={title}
-                          className="w-20 h-20 object-cover rounded-md shadow-md"
-                        />
-                      </td>
-                      <td className={`${className} w-40`}>
-                        <div className="flex gap-2 overflow-x-auto">
-                          {subImages.map((image, index) => (
-                            <img
-                              key={index}
-                              src={`http://localhost:4000/${image}`}
-                              alt={`${title} sub-image ${index + 1}`}
-                              className="w-12 h-12 object-cover rounded-md shadow-sm"
-                            />
-                          ))}
-                        </div>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {new Date(createdAt).toLocaleDateString()}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {new Date(updatedAt).toLocaleDateString()}
-                        </Typography>
-                      </td>
-                    </tr>
-                  );
-                },
-              )}
-            </tbody>
-          </table>
-
-          {/* Pagination Controls */}
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-4 py-2 text-sm font-semibold text-black rounded-l bg-gray-300"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            {[...Array(totalPages).keys()].map((number) => (
-              <button
-                key={number + 1}
-                onClick={() => paginate(number + 1)}
-                className={`px-4 py-2 text-sm font-semibold ${
-                  currentPage === number + 1
-                    ? "bg-white text-black"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+            <CardBody>
+              <Typography variant="h6" className="text-gray-800">
+                {b.title}
+              </Typography>
+              <Typography className="text-xs text-gray-500 mb-2">
+                {b.category} - {b.subcategory}
+              </Typography>
+              <Typography className="text-sm text-gray-700">
+                {b.description.length > 60
+                  ? `${b.description.substring(0, 60)}...`
+                  : b.description}
+              </Typography>
+              <Button
+                size="sm"
+                variant="outlined"
+                className="mt-4 flex items-center gap-2"
+                onClick={() => handleViewDetails(b)}
               >
-                {number + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 text-sm font-semibold text-black rounded-r bg-gray-300"
-            >
-              <ChevronRight size={18} />
-            </button>
+                <Eye size={16} /> View Details
+              </Button>
+            </CardBody>
+          </Card>
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-10 gap-1">
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-1 text-sm bg-gray-300 text-black rounded-l"
+        >
+          <ChevronLeft size={18} />
+        </button>
+        {[...Array(totalPages).keys()].map((num) => (
+          <button
+            key={num + 1}
+            onClick={() => paginate(num + 1)}
+            className={`px-3 py-1 text-sm font-semibold ${
+              currentPage === num + 1
+                ? "bg-white text-black"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            {num + 1}
+          </button>
+        ))}
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 text-sm bg-gray-300 text-black rounded-r"
+        >
+          <ChevronRight size={18} />
+        </button>
+      </div>
+
+      <Dialog open={openDialog} handler={() => setOpenDialog(false)} size="lg">
+        <DialogHeader>{selectedBusiness?.title}</DialogHeader>
+        <DialogBody className="max-h-[70vh] overflow-y-auto">
+          <Typography variant="h6">
+            Category: {selectedBusiness?.category}
+          </Typography>
+          <Typography>Subcategory: {selectedBusiness?.subcategory}</Typography>
+          <Typography>Address: {selectedBusiness?.address}</Typography>
+          <Typography>Description: {selectedBusiness?.description}</Typography>
+          <Typography>Contact: {selectedBusiness?.contact}</Typography>
+          <Typography>
+            Created At:{" "}
+            {new Date(selectedBusiness?.createdAt).toLocaleDateString()}
+          </Typography>
+          <Typography>
+            Updated At:{" "}
+            {new Date(selectedBusiness?.updatedAt).toLocaleDateString()}
+          </Typography>
+          <div className="mt-4">
+            <img
+              src={`http://localhost:4000/${selectedBusiness?.mainImage}`}
+              alt="Main"
+              className="w-full h-64 object-cover rounded"
+            />
+            <div className="flex gap-2 mt-4 overflow-x-auto">
+              {selectedBusiness?.subImages?.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={`http://localhost:4000/${img}`}
+                  alt="Sub"
+                  className="w-20 h-20 object-cover rounded shadow-sm"
+                />
+              ))}
+            </div>
           </div>
-        </CardBody>
-      </Card>
+        </DialogBody>
+        <DialogFooter>
+          <Button onClick={() => setOpenDialog(false)} className="bg-teal-600">
+            Close
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 }

@@ -151,58 +151,57 @@ const UpdateService = () => {
     }
   };
 
-const handleDelete = async (id) => {
-  const authToken = localStorage.getItem("authToken"); // Get token from localStorage
-  if (!authToken) {
-    setError("No authentication token found.");
-    return;
-  }
-
-  // Show SweetAlert2 confirmation dialog
-  const result = await Swal.fire({
-    title: "Are you sure?",
-    text: "This action cannot be undone.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "Cancel",
-    customClass: {
-      confirmButton:
-        "bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500", // Tailwind classes for the confirm button
-      cancelButton:
-        "bg-gray-300 text-gray-800 hover:bg-gray-400 focus:ring-2 focus:ring-gray-500", // Tailwind classes for the cancel button
-    },
-    buttonsStyling: false, // Disable default styling to apply your own Tailwind styles
-  });
-
-  // If the user confirms, proceed with the delete action
-  if (result.isConfirmed) {
-    try {
-      const response = await axios.delete(
-        "http://localhost:4000/api/services-delete",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-          data: { id }, // Send the ID in the body (not in the URL)
-        },
-      );
-
-      if (response.status === 200) {
-        setServices((prevServices) =>
-          prevServices.filter((service) => service.id !== id),
-        );
-        Swal.fire("Deleted!", "Service deleted successfully.", "success");
-      } else {
-        throw new Error("Failed to delete service.");
-      }
-    } catch (error) {
-      setError(error.message);
-      Swal.fire("Error", error.message, "error");
+  const handleDelete = async (id) => {
+    const authToken = localStorage.getItem("authToken"); // Get token from localStorage
+    if (!authToken) {
+      setError("No authentication token found.");
+      return;
     }
-  }
-};
 
+    // Show SweetAlert2 confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+      customClass: {
+        confirmButton:
+          "bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500", // Tailwind classes for the confirm button
+        cancelButton:
+          "bg-gray-300 text-gray-800 hover:bg-gray-400 focus:ring-2 focus:ring-gray-500", // Tailwind classes for the cancel button
+      },
+      buttonsStyling: false, // Disable default styling to apply your own Tailwind styles
+    });
+
+    // If the user confirms, proceed with the delete action
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.delete(
+          "http://localhost:4000/api/services-delete",
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+            data: { id }, // Send the ID in the body (not in the URL)
+          },
+        );
+
+        if (response.status === 200) {
+          setServices((prevServices) =>
+            prevServices.filter((service) => service.id !== id),
+          );
+          Swal.fire("Deleted!", "Service deleted successfully.", "success");
+        } else {
+          throw new Error("Failed to delete service.");
+        }
+      } catch (error) {
+        setError(error.message);
+        Swal.fire("Error", error.message, "error");
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -423,7 +422,7 @@ const handleDelete = async (id) => {
                       </button>
                       <button
                         type="submit"
-                        className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all"
+                        className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-all"
                       >
                         Save Changes
                       </button>
